@@ -343,7 +343,7 @@
 		}
 
 		function getCurrentNodeId() {
-			return myStory.state.currentPath ? myStory.state.currentPath.toString() : '';
+			return myStory.state.currentPathString ? myStory.state.currentPathString : 'root';
 		}
 
 		function getBackgroundColorFromId(id) {
@@ -394,7 +394,7 @@
 
 			if (myStory.currentChoices.length > 0) {
 				for (let i = 0; i < myStory.currentChoices.length; ++i) {
-					//					console.log(node.id + ': choice ' + i);
+					console.log(node.id + ': choice ' + i);
 					let choice = myStory.currentChoices[i];
 					let choiceNode = {
 						id: choice.pathStringOnChoice,
