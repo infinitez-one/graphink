@@ -257,6 +257,24 @@
 			exploreRecursively();
 			optimize();
 
+			// So far the graph should represent the original story exactly.
+			// Now we combine nodes with the same text but different choices.
+			// This makes the graph technically incorrect, but practically much easier to read.
+			{
+				let texts = {};
+				for (var id in nodes) {
+					texts[hashOf(nodes[id].text)] = [];
+				}
+
+				for (var id in nodes) {
+					texts[hashOf(nodes[id].text)].push(id);
+				}
+
+				for (var hash in texts) {
+					combine(texts[hash], true);
+				}
+			}
+
 			console.log(nodes)
 
 			//set up the graph
@@ -433,7 +451,7 @@
 			return id;
 		}
 
-		function combine(ids) {
+		function combine(ids, addChoices = false) {
 			if (ids.length < 2) {
 				return;
 			}
@@ -449,9 +467,11 @@
 				return;
 			}
 
+			let choices = [];
 			id = "combined";
 			for (const vid of validIds) {
 				id += "+" + vid;
+				choices.push(...nodes[vid].choices);
 			}
 
 			for (var key in nodes) {
@@ -465,6 +485,13 @@
 			var node = JSON.parse(JSON.stringify(nodes[validIds[0]]));
 			delete nodes[validIds[0]];
 			node.id = id;
+			if (addChoices) {
+				node.choices = choices;
+				var i = 0;
+				for (var choice of node.choices) {
+					choice.index = i++;
+				}
+			}
 			nodes[id] = node;
 
 			for (var id of validIds) {
