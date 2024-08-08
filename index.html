@@ -220,6 +220,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js"></script>
 	<script src="https://unpkg.com/inkjs@2.2.4/dist/ink-full.js"></script>
 	<script src="https://unpkg.com/cytoscape@3.30.1/dist/cytoscape.min.js"></script>
+	<script src="https://unpkg.com/klayjs@0.4.1/klay.js"></script>
+	<script src="cytoscape-klay.js"></script>
+
 	<script>
 		var myStory,
 			nodes = {},
@@ -350,11 +353,19 @@
 						'source-label': 'data(text)',
 						'source-text-offset': '100%',
 						'text-opacity': .6,
+						'target-arrow-shape': 'triangle',
+						'target-arrow-color': 'data(color)',
+						'curve-style': 'bezier',
 					}
 				}],
 				layout: {
-					name: 'breadthfirst',
-					directed: true,
+					name: 'klay',
+					klay: {
+						direction: 'DOWN',
+						edgeRouting: 'POLYLINE',
+						fixedAlignment: 'BALANCED',
+						layoutHierarchy: true,
+					},
 				}
 			});
 
