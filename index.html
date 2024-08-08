@@ -276,6 +276,20 @@
 				for (var hash in texts) {
 					combine(texts[hash], true);
 				}
+
+				// Now some nodes have duplicate choices. Remove them.
+				for (var id in nodes) {
+					let choices = [];
+					let choiceSet = new Set();
+					for (const choice of nodes[id].choices) {
+						const choiceName = choice.text + "->" + choice.next;
+						if (!choiceSet.has(choiceName)) {
+							choiceSet.add(choiceName);
+							choices.push(choice);
+						}
+					}
+					nodes[id].choices = choices;
+				}
 			}
 
 			console.log(nodes)
